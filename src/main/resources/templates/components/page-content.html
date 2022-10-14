@@ -1,0 +1,34 @@
+<div th:fragment="page-content (flows)">
+<div class="container-fluid">
+  <!-- Page Heading -->
+  <div th:replace="components/page-heading :: page-heading"></div>
+  <!-- Page Heading -->
+
+  <!-- Carousel -->
+  <div th:replace="components/carousel :: carousel(sensorList=${sensorList}, lastFlow=${lastFlow})"></div>
+  <!-- Carousel -->
+
+  <!-- Area Chart
+  <div th:replace="components/area-chart :: area-chart"></div>
+  Area Chart -->
+
+  <div class="row">
+    <div class="col">
+      <!-- Data Table -->
+      <div th:replace="components/data-table :: data-table(flows=${flows})"></div>
+      <!-- Data Table -->
+    </div>
+  </div>
+
+
+  <footer class="sticky-footer bg-white">
+    <div class="container my-auto">
+      <div class="copyright text-center my-auto">
+        <span>Copyright &copy; Your Website 2021</span>
+      </div>
+    </div>
+  </footer>
+</div>
+</div>
+
+

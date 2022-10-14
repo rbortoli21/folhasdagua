@@ -1,0 +1,84 @@
+<div th:fragment="carousel-item(sensor, lastFlow)">
+<div class="row">
+    <!--Card maior-->
+    <div class="col m-5">
+        <h2 class="text-dark" th:text="${sensor.name}"></h2>
+        <div class="card border-bottom-primary shadow py-5">
+            <div class="row p-4 justify-content-center">
+                <div class="col">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                        Quantidade
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${lastFlow.amount}"></div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div
+                                            class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        Duração
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${lastFlow.duration}"></div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div
+                                            class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        Média de Quantidade
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800"></div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card shadow">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div
+                                            class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                        Status
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${lastFlow.status} ? 'Funcionando' : 'Problema'"></div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>

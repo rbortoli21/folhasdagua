@@ -1,0 +1,25 @@
+.carousel-control-next-icon,
+.carousel-control-prev-icon {
+    filter: invert(1);
+}
+
+.carousel-control-prev-icon{
+    position: absolute;
+    left: 0;
+}
+
+.carousel-control-next-icon {
+    position: absolute;
+    right: 0;
+}
+
+.carousel-indicators{
+    filter: invert(1);
+}
+
+#loader{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    z-index: 100;
+}
