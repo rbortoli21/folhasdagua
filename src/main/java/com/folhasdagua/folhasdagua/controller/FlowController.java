@@ -41,4 +41,8 @@ public class FlowController {
     public Object getAmountAverage(@Payload final Integer sensorId) throws Exception {
         return flowService.getAmountAverage(sensorService.getSensorById(sensorId));
     }
+    @MessageMapping({"/saveRealTimeFlow"})
+    public void saveRealTimeFlow(@Payload final Integer sensorId) throws Exception {
+        flowService.saveRealTimeFlow(sensorService.getSensorById(sensorId));
+    }
 }

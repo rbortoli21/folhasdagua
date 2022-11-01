@@ -32,6 +32,9 @@ function disconnect() {
     }
     console.log("Disconnected");
 }
+async function saveRealTimeFlow(){
+    await stompClient.send("/app/saveRealTimeFlow", {}, getIdSensorActive());
+}
 
 async function getRealTimeFlowBySensor(){
     await stompClient.send("/app/getRealTimeFlow", {}, getIdSensorActive());
@@ -62,6 +65,9 @@ function refreshPage(){
         getFlowListBySensor();
         getRealTimeFlowBySensor();
     }, 3000);
+    setInterval(() => {
+        saveRealTimeFlow();
+    }, 10000);
 }
 
 

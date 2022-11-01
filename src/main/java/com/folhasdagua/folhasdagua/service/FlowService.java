@@ -30,16 +30,19 @@ public class FlowService {
             flow = makeFlowObject(byteCount, sensor);
             System.out.println(flow);
             sensorConnectService.disconnect();
-        }catch (SerialPortException ex){
-            System.out.println(ex.getMessage());
+        }catch (SerialPortException exception){
+            System.out.println(exception.getMessage());
         }
         return flow;
     }
-    public void saveRealTimeFlow(Sensor sensor) throws SerialPortException {
-        this.sensorConnectService.connect();
-        Flow flow = makeFlowObject(sensorConnectService.read(3).toString(), sensor);
-        this.flowRepository.save(flow);
-        this.sensorConnectService.disconnect();
+    public void saveRealTimeFlow(Sensor sensor) {
+        try{
+            Flow flow = getRealTimeFlow(sensor);
+            save(flow);
+            System.out.println("------------------ SALVO NO BANCO ------------------");
+        }catch (Exception exception){
+            saveRealTimeFlow(sensor);
+        }
     }
 
     public double getAmountAverage(Sensor sensor){
@@ -48,17 +51,17 @@ public class FlowService {
     }
 
     public List<Flow> getFlowListBySensor(Sensor sensor) {
-        return this.flowRepository.findAllBySensor(sensor);
+        return flowRepository.findAllBySensor(sensor);
     }
 
     private Flow makeFlowObject(String value, Sensor sensor) {
         Flow flow = new Flow();
         double amount = Double.parseDouble(value);
         flow.setAmount(makeAmount(amount));
-        flow.setDate(this.getNowDate());
-        flow.setHour(this.getNowHours());
+        flow.setDate(getNowDate());
+        flow.setHour(getNowHours());
         flow.setDuration(10.0);
-        flow.setStatus(this.getFlowStatus(amount));
+        flow.setStatus(getFlowStatus(amount));
         flow.setSensor(sensor);
 
         return flow;
@@ -87,5 +90,9 @@ public class FlowService {
         Stream<Flow> flowStream = getFlowListBySensor(sensor).stream();
         Optional<Flow> flow = flowStream.reduce((first, last) -> last);
         return (Flow) flow.orElse(null);
+    }
+
+    public Flow save(Flow flow){
+        return flowRepository.save(flow);
     }
 }
