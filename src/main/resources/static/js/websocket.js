@@ -1,18 +1,27 @@
+import {makeDataTable} from "/js/index.js"
+import {removeContentDataTable} from "/js/index.js"
+import {activateLoader} from "/js/index.js"
+import {makeLastFlow} from "/js/index.js"
+import {makeAmountAverage} from "/js/index.js"
+
+
 var stompClient = null;
 function connect() {
-    var socket = new SockJS('/webtest');
+    var socket = new SockJS('/websocket');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function(frame) {
-
         console.log('Connected: ' + frame);
-        stompClient.subscribe('/topic/public', function(retorno) {
-
-            var json = JSON.parse(retorno.body)[0];
-            console.log(json);
+        stompClient.subscribe('/topic/flowList', function(_json) {
+            var json = JSON.parse(_json.body)[0];
             removeContentDataTable(function(){
                 makeDataTable(json);
             })
-
+        });
+        stompClient.subscribe('/topic/realTimeFlow', function(json){
+            makeLastFlow(json)
+        });
+        stompClient.subscribe('/topic/amountAverage', function(json){
+            makeAmountAverage(json);
         });
     });
 }
@@ -24,53 +33,36 @@ function disconnect() {
     console.log("Disconnected");
 }
 
-function sendSensorId() {
-    activateLoader();
-    stompClient.send("/app/test", {}, 1);
+async function getRealTimeFlowBySensor(){
+    await stompClient.send("/app/getRealTimeFlow", {}, getIdSensorActive());
+    getAmountAverageBySensor();
+}
+
+async function getFlowListBySensor(callback) {
+    await stompClient.send("/app/getFlowListBySensor", {}, getIdSensorActive());
+}
+
+function getAmountAverageBySensor(){
+    stompClient.send("/app/getAmountAverage", {}, getIdSensorActive());
+};
+
+function getIdSensorActive(){
+   return $(".carousel-item.active").attr("id").split("-")[2];
 }
 
 $(document).ready(()=>{
-    connect()
+    connect();
+    setTimeout(function(){
+        refreshPage();
+    }, 2000);
 })
 
-$("#refreshValues").on("click", ()=>{
-    sendSensorId();
-})
-
-function makeDataTable(json){
-    const tableBody = json.map((j) => {
-      return `<tr>
-        <td>${j.amount}</td>
-        <td>${j.date}</td>
-        <td>${j.hour}</td>
-        <td>${j.status}</td>
-        <td>${j.duration}</td>
-       </tr>
-      `
-    }).join('')
-        $("#dataTableTBody").append(tableBody);
-        console.log("inserido")
-        activateLoader()
-    }
-
-function removeContentDataTable(callback){
-    $("#dataTableTBody").empty();
-    console.log("limpo")
-    callback();
+function refreshPage(){
+    setInterval(() => {
+        getFlowListBySensor();
+        getRealTimeFlowBySensor();
+    }, 3000);
 }
 
 
-function activateLoader(){
-    console.log("loader")
-    if($("#loader").is( ":visible" )){
-        $("#loader").hide();
-        $("body").css('opacity', '1')
-    }
-    else{
-        $("#loader").show();
-        $(".imgLoader").css("position", "absolute")
-        $("body").css("opacity", "0.4")
-        $("body").css("background", "black")
-    }
-}
 

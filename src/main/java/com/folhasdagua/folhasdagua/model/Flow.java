@@ -15,34 +15,20 @@ import javax.persistence.ManyToOne;
 @Entity
 public class Flow {
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE
-    )
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
-    @Column(
-            nullable = false
-    )
+    @Column(nullable = false)
     private double amount;
-    @Column(
-            nullable = false
-    )
+    @Column(nullable = false)
     private String date;
-    @Column(
-            nullable = false
-    )
+    @Column(nullable = false)
     private String hour;
-    @Column(
-            nullable = false
-    )
+    @Column(nullable = false)
     private boolean status;
-    @Column(
-            nullable = false
-    )
+    @Column(nullable = false)
     private double duration;
     @ManyToOne
-    @JoinColumn(
-            name = "idSensor"
-    )
+    @JoinColumn(name = "idSensor")
     private Sensor sensor;
 
     public Flow() {

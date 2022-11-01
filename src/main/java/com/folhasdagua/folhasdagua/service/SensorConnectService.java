@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SensorConnectService {
+
     SerialPort serialPort;
     String port;
 
@@ -27,30 +28,24 @@ public class SensorConnectService {
         return this.serialPort.isOpened() ? ResponseEntity.ok(this.serialPort = new SerialPort(port)) : ResponseEntity.notFound().build();
     }
 
-    public ResponseEntity<Boolean> connect() {
-        try {
-            this.serialPort.openPort();
-            this.serialPort.setParams(9600, 8, 1, 0);
-        } catch (SerialPortException var2) {
-            var2.printStackTrace();
+    public ResponseEntity<Boolean> connect() throws SerialPortException {
+        if(serialPort.isOpened()){
+            disconnect();
         }
+        this.serialPort.openPort();
+        this.serialPort.setParams(9600, 8, 1, 0);
 
         return ResponseEntity.ok(this.serialPort.isOpened());
     }
 
-    public ResponseEntity<Boolean> disconnect() {
-        try {
-            if (this.serialPort.isOpened()) {
-                this.serialPort.closePort();
-            }
-        } catch (SerialPortException var2) {
-            var2.printStackTrace();
+    public ResponseEntity<Boolean> disconnect() throws SerialPortException {
+        if (this.serialPort.isOpened()) {
+            this.serialPort.closePort();
         }
-
         return ResponseEntity.ok(!this.serialPort.isOpened());
     }
 
     public String read(Integer byteCount) throws SerialPortException {
-        return this.serialPort.readString(byteCount);
+        return serialPort.readString(byteCount);
     }
 }

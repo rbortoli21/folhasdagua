@@ -26,16 +26,6 @@ public class SensorService {
         return (Sensor)sensorOptional.orElse(null);
     }
 
-    public List<Flow> getSensorFlows(Integer sensorId) {
-        Optional<Sensor> sensorOptional = this.sensorRepository.findById(sensorId);
-        List<Flow> flows = this.flowRepository.findAll();
-        if (sensorOptional.isPresent()) {
-            Sensor var4 = (Sensor)sensorOptional.get();
-        }
-
-        return new ArrayList();
-    }
-
     public Sensor getFirstSensor() {
         Optional<Sensor> sensorOptional = this.sensorRepository.findAll().stream().findFirst();
         return (Sensor)sensorOptional.orElse(null);
@@ -45,12 +35,9 @@ public class SensorService {
         return this.sensorRepository.findAll();
     }
 
-    public void setSensorIdActive(Integer id) {
-        this.idActive = id;
-    }
-
     public Sensor getSensorActive() {
         Optional<Sensor> sensorOptional = this.sensorRepository.findById(1);
-        return sensorOptional.isPresent() ? (Sensor)sensorOptional.get() : null;
+        return (Sensor) sensorOptional.orElse(null);
     }
+
 }

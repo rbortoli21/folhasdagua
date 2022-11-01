@@ -32,13 +32,9 @@ public class SensorController {
     @Autowired
     FlowRepository flowRepository;
 
-    public SensorController() {
-    }
+    public SensorController() {}
 
-    @RequestMapping(
-            value = {"/"},
-            method = {RequestMethod.GET}
-    )
+    @RequestMapping(value = {"/"}, method = {RequestMethod.GET})
     public ModelAndView getHomepage() {
         ModelAndView modelAndView = new ModelAndView("index");
         List<Sensor> sensorList = this.sensorService.getAll();
@@ -54,21 +50,9 @@ public class SensorController {
         return modelAndView;
     }
 
-    @RequestMapping(
-            value = {"/{id}"},
-            method = {RequestMethod.GET}
-    )
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Sensor> getHomepage(@PathVariable("id") Integer sensorId) {
-        this.sensorService.setSensorIdActive(sensorId);
-        return ResponseEntity.ok(this.sensorService.getSensorById(sensorId));
-    }
-
-    @MessageMapping({"/test"})
-    @SendTo({"/topic/public"})
+    @MessageMapping({"/getFlowListBySensor"})
+    @SendTo({"/topic/flowList"})
     public List<Object> refreshEntity(@Payload final Integer sensorId) throws Exception {
-        Thread.sleep(1000L);
-        System.out.println("conectado");
         return Collections.singletonList(this.flowService.getFlowListBySensor(this.sensorService.getSensorById(sensorId)));
     }
 }

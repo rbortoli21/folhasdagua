@@ -17,7 +17,6 @@
 <body id="page-top">
 <div id="loader"><img class="imgLoader" src="img/ajaxLoader.gif"></div>
 <div id="wrapper">
-
    <!--Layout-->
    <ul th:replace="~{components/sidebar :: sidebar}"></ul>
    <div id="content-wrapper" class="d-flex flex-column">
@@ -26,9 +25,6 @@
          <!--Page Content-->
          <div th:replace="~{components/page-content :: page-content(flows=${flows}, sensorList=${sensorList}, lastFlow=${lastFlow})}"></div>
       </div>
-
-
-
    </div>
 </div>
    <script th:src="@{vendor/jquery/jquery.min.js}"></script>
@@ -45,7 +41,8 @@
    <script th:src="@{vendor/datatables/jquery.dataTables.min.js}"></script>
    <script th:src="@{vendor/datatables/dataTables.bootstrap4.min.js}"></script>
    <script th:src="@{js/datatable/datatable.js}"></script>
-   <script th:src="@{js/manipulations.js}"></script>
-   <script th:src="@{js/websocket.js}"></script>
+   <script th:src="@{js/script.js}"></script>
+   <script th:src="@{js/websocket.js}" type="module"></script>
+   <script th:src="@{js/index.js}" type="module"></script>
 </body>
 </html>
