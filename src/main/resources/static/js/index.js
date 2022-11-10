@@ -1,13 +1,25 @@
 //funções utilizadas em outros arquivos
 
+export function makeCarouselList(json){
+    var sensorList = JSON.parse(json.body);
+    console.log(sensorList)
+    $(".carousel-item.active").attr("id", `sensor-item-${sensorList[0].id}`);
+    sensorList.forEach((sensor) => {
+        var carouselItem = `<div id="sensor-id-${sensor.id}" class="carousel-item">
+
+        </div>
+        `
+        $("#sensorList").append(carouselItem);
+    }   );
+}
+
 export function makeDataTable(json){
     const tableBody = json.map((j) => {
       return `<tr>
-        <td>${j.amount}</td>
+        <td>${j.amount}%</td>
         <td>${j.date}</td>
         <td>${j.hour}</td>
-        <td>${j.status}</td>
-        <td>${j.duration}</td>
+        <td>${j.status ? 'Funcionando' : 'Algo não funcionou...'}</td>
        </tr>
       `
     }).join('');
@@ -43,11 +55,19 @@ export function makeAmountAverage(json){
 
 export function makeLastFlow(json){
     var lastFlow = JSON.parse(json.body);
-    console.log("LastFlow: ", lastFlow)
+
+    $("#statusLabel").removeClass("text-danger").addClass("text-success");
+    $("#amountLabel").removeClass("text-danger").addClass("text-success");
 
     $("#lastFlowAmount").text(lastFlow.amount + "%");
-    $("#lastFlowDuration").text(lastFlow.duration);
-
     $("#lastFlowStatus").text("Funcionando");
-    if(lastFlow.status != true) $("#lastFlowStatus").text("Tem algo errado...");
+//    $("#lastFlowDuration").text(lastFlow.duration);
+
+
+    if(!lastFlow.status){
+        $("#lastFlowStatus").text("Tem algo errado...");
+        $("#statusLabel").removeClass("text-success").addClass("text-danger")
+        $("#amountLabel").removeClass("text-success").addClass("text-danger");
+    }
 }
+

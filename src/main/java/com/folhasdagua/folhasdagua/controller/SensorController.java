@@ -8,6 +8,8 @@ import com.folhasdagua.folhasdagua.service.FlowService;
 import com.folhasdagua.folhasdagua.service.SensorService;
 import java.util.Collections;
 import java.util.List;
+
+import com.folhasdagua.folhasdagua.service.SmsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,33 +28,20 @@ public class SensorController {
     @Autowired
     SensorService sensorService;
     @Autowired
-    SensorRepository sensorRepository;
-    @Autowired
-    FlowService flowService;
-    @Autowired
-    FlowRepository flowRepository;
+    SmsService smsService;
 
     public SensorController() {}
 
     @RequestMapping(value = {"/"}, method = {RequestMethod.GET})
     public ModelAndView getHomepage() {
-        ModelAndView modelAndView = new ModelAndView("index");
-        List<Sensor> sensorList = this.sensorService.getAll();
-        List<Flow> flows = this.flowRepository.findAllBySensor(this.sensorService.getSensorActive());
-        Flow lastFlow = null;
-        if (flows.size() > 0) {
-            lastFlow = (Flow)flows.get(flows.size() - 1);
-        }
-
-        modelAndView.addObject("flows", flows);
-        modelAndView.addObject("sensorList", sensorList);
-        modelAndView.addObject("lastFlow", lastFlow);
-        return modelAndView;
+        ModelAndView mv = new ModelAndView("index");
+        mv.addObject("sensorList", sensorService.getAll());
+        return mv;
     }
 
-    @MessageMapping({"/getFlowListBySensor"})
-    @SendTo({"/topic/flowList"})
-    public List<Object> refreshEntity(@Payload final Integer sensorId) throws Exception {
-        return Collections.singletonList(this.flowService.getFlowListBySensor(this.sensorService.getSensorById(sensorId)));
+    @MessageMapping({"/getSensorList"})
+    @SendTo({"/topic/getSensorList"})
+    public List<Sensor> getSensorList(){
+        return sensorService.getAll();
     }
 }

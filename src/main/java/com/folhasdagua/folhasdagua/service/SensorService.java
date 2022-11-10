@@ -14,9 +14,6 @@ import org.springframework.stereotype.Service;
 public class SensorService {
     @Autowired
     SensorRepository sensorRepository;
-    @Autowired
-    FlowRepository flowRepository;
-    public Integer idActive;
 
     public SensorService() {
     }

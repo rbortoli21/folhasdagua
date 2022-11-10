@@ -1,8 +1,8 @@
-<div th:fragment="carousel-item(sensor, lastFlow)">
+<div th:fragment="carousel-item">
 <div class="row">
     <!--Card maior-->
     <div class="col m-5">
-        <h2 class="text-dark" th:text="${sensor.name}"></h2>
+        <h2 class="text-dark" id="sensor-title">Bancada - 01</h2>
         <div class="card border-bottom-primary shadow py-5">
             <div class="row p-4 justify-content-center">
                 <div class="col">
@@ -10,7 +10,7 @@
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                    <div id="amountLabel" class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                         Quantidade
                                     </div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800" id="lastFlowAmount"></div>
@@ -22,6 +22,7 @@
                         </div>
                     </div>
                 </div>
+                <!--
                 <div class="col">
                     <div class="card shadow">
                         <div class="card-body">
@@ -39,15 +40,15 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div>-->
                 <div class="col">
                     <div class="card shadow">
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
                                     <div
-                                            id="amountAverage"
-                                            class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                            id="amountAverageLabel"
+                                            class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                         Média de Quantidade
                                     </div>
                                     <div class="h5 mb-0 font-weight-bold text-gray-800" id="flowsAverage"></div>
@@ -64,7 +65,7 @@
                         <div class="card-body">
                             <div class="row no-gutters align-items-center">
                                 <div class="col mr-2">
-                                    <div
+                                    <div id="statusLabel"
                                             class="text-xs font-weight-bold text-success text-uppercase mb-1">
                                         Status
                                     </div>

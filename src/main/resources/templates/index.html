@@ -4,13 +4,13 @@
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
    <title>Folhas D'Água - Dashboard</title>
-   <link th:href="@{/vendor/fontawesome-free/css/all.min.css}" rel="stylesheet" type="text/css">
+   <link href="/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
    <link
            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
            rel="stylesheet">
-   <link th:href="@{/css/sb-admin-2.min.css}" rel="stylesheet">
-   <link th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}" rel="stylesheet">
-   <link th:href="@{/css/folhasdagua.css}" rel="stylesheet">
+   <link href="/css/sb-admin-2.min.css" rel="stylesheet">
+   <link href="/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+   <link href="/css/folhasdagua.css" rel="stylesheet">
    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
 </head>
@@ -18,31 +18,31 @@
 <div id="loader"><img class="imgLoader" src="img/ajaxLoader.gif"></div>
 <div id="wrapper">
    <!--Layout-->
-   <ul th:replace="~{components/sidebar :: sidebar}"></ul>
+<!--   <ul th:replace="~{components/sidebar :: sidebar}"></ul>-->
    <div id="content-wrapper" class="d-flex flex-column">
       <div class="content">
          <div th:replace="~{components/topbar :: topbar}"></div>
          <!--Page Content-->
-         <div th:replace="~{components/page-content :: page-content(flows=${flows}, sensorList=${sensorList}, lastFlow=${lastFlow})}"></div>
+         <div th:replace="~{components/page-content :: page-content}"></div>
       </div>
    </div>
 </div>
-   <script th:src="@{vendor/jquery/jquery.min.js}"></script>
-   <script th:src="@{vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+   <script src="vendor/jquery/jquery.min.js"></script>
+   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
    <!-- Core plugin JavaScript-->
-   <script th:src="@{vendor/jquery-easing/jquery.easing.min.js}"></script>
+   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
    <!-- Custom scripts for all pages-->
-   <script th:src="@{js/sb-admin-2.min.js}"></script>
+   <script src="js/sb-admin-2.min.js"></script>
    <!-- Page level plugins -->
-   <script th:src="@{vendor/chart.js/Chart.min.js}"></script>
+   <script src="vendor/chart.js/Chart.min.js"></script>
    <!-- Page level custom scripts -->
-   <script th:src="@{js/demo/chart-area-demo.js}"></script>
-   <script th:src="@{js/demo/chart-pie-demo.js}"></script>
-   <script th:src="@{vendor/datatables/jquery.dataTables.min.js}"></script>
-   <script th:src="@{vendor/datatables/dataTables.bootstrap4.min.js}"></script>
-   <script th:src="@{js/datatable/datatable.js}"></script>
-   <script th:src="@{js/script.js}"></script>
-   <script th:src="@{js/websocket.js}" type="module"></script>
-   <script th:src="@{js/index.js}" type="module"></script>
+   <script src="js/demo/chart-area-demo.js"></script>
+   <script src="js/demo/chart-pie-demo.js"></script>
+   <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+   <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+   <script src="js/datatable/datatable.js"></script>
+   <script src="js/script.js"></script>
+   <script src="js/websocket.js" type="module"></script>
+   <script src="js/index.js" type="module"></script>
 </body>
 </html>

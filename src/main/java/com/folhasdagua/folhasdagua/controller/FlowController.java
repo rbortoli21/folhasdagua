@@ -6,6 +6,8 @@ import com.folhasdagua.folhasdagua.service.SensorService;
 
 import java.util.Collections;
 import java.util.List;
+
+import com.folhasdagua.folhasdagua.service.SmsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,25 +26,30 @@ public class FlowController {
     FlowService flowService;
     @Autowired
     SensorService sensorService;
-    public FlowController() {}
-    @RequestMapping(value = {"/getFlowList/{id}"}, method = {RequestMethod.GET})
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<Flow>> getFlowList(@PathVariable("id") Integer id) {
-        return ResponseEntity.ok(flowService.getFlowListBySensor(sensorService.getSensorById(id)));
+
+    @Autowired
+    SmsService smsService;
+
+    @MessageMapping({"/getFlowListBySensor"})
+    @SendTo("/topic/flowList")
+    public Object getFlowListBySensor(@Payload final Integer sensorId) {
+        return flowService.getFlowListBySensor(sensorService.getSensorById(sensorId));
     }
     @MessageMapping({"/getRealTimeFlow"})
     @SendTo({"/topic/realTimeFlow"})
-    public Object getRealTimeFlow(@Payload final Integer sensorId) throws Exception {
-        System.out.println("passou");
-        return flowService.getRealTimeFlow(sensorService.getSensorById(sensorId));
+    public Object getRealTimeFlow(@Payload final Integer sensorId){
+        Flow flow = flowService.getRealTimeFlow(sensorService.getSensorById(sensorId));
+//        if(!flow.isStatus());
+//            smsService.send("Algo não está funcionando corretamente, verifique sua plantação!");
+        return flow;
     }
     @MessageMapping({"/getAmountAverage"})
     @SendTo({"/topic/amountAverage"})
-    public Object getAmountAverage(@Payload final Integer sensorId) throws Exception {
+    public Object getAmountAverage(@Payload final Integer sensorId){
         return flowService.getAmountAverage(sensorService.getSensorById(sensorId));
     }
     @MessageMapping({"/saveRealTimeFlow"})
-    public void saveRealTimeFlow(@Payload final Integer sensorId) throws Exception {
+    public void saveRealTimeFlow(@Payload final Integer sensorId){
         flowService.saveRealTimeFlow(sensorService.getSensorById(sensorId));
     }
 }

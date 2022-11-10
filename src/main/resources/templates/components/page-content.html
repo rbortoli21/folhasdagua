@@ -1,11 +1,11 @@
-<div th:fragment="page-content (flows)">
+<div th:fragment="page-content">
 <div class="container-fluid">
   <!-- Page Heading -->
   <div th:replace="components/page-heading :: page-heading"></div>
   <!-- Page Heading -->
 
   <!-- Carousel -->
-  <div th:replace="components/carousel :: carousel(sensorList=${sensorList}, lastFlow=${lastFlow})"></div>
+  <div th:replace="components/carousel :: carousel(sensorList=${sensorList})"></div>
   <!-- Carousel -->
 
   <!-- Area Chart
@@ -15,7 +15,7 @@
   <div class="row">
     <div class="col">
       <!-- Data Table -->
-      <div th:replace="components/data-table :: data-table(flows=${flows})"></div>
+      <div th:replace="components/data-table :: data-table"></div>
       <!-- Data Table -->
     </div>
   </div>

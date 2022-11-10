@@ -3,6 +3,7 @@ import {removeContentDataTable} from "/js/index.js"
 import {activateLoader} from "/js/index.js"
 import {makeLastFlow} from "/js/index.js"
 import {makeAmountAverage} from "/js/index.js"
+import {makeCarouselList} from "/js/index.js"
 
 
 var stompClient = null;
@@ -12,7 +13,8 @@ function connect() {
     stompClient.connect({}, function(frame) {
         console.log('Connected: ' + frame);
         stompClient.subscribe('/topic/flowList', function(_json) {
-            var json = JSON.parse(_json.body)[0];
+            var json = JSON.parse(_json.body);
+            console.log(json);
             removeContentDataTable(function(){
                 makeDataTable(json);
             })
@@ -22,6 +24,9 @@ function connect() {
         });
         stompClient.subscribe('/topic/amountAverage', function(json){
             makeAmountAverage(json);
+        });
+        stompClient.subscribe('/topic/getSensorList', function(json){
+            makeCarouselList(json);
         });
     });
 }
@@ -41,8 +46,12 @@ async function getRealTimeFlowBySensor(){
     getAmountAverageBySensor();
 }
 
-async function getFlowListBySensor(callback) {
+async function getFlowListBySensor() {
     await stompClient.send("/app/getFlowListBySensor", {}, getIdSensorActive());
+}
+
+async function getSensorList(){
+   await stompClient.send("/app/getSensorList", {});
 }
 
 function getAmountAverageBySensor(){
@@ -56,18 +65,21 @@ function getIdSensorActive(){
 $(document).ready(()=>{
     connect();
     setTimeout(function(){
+        activateLoader();
+        getSensorList();
         refreshPage();
     }, 2000);
+    activateLoader();
 })
 
 function refreshPage(){
     setInterval(() => {
         getFlowListBySensor();
         getRealTimeFlowBySensor();
-    }, 3000);
+    }, 2000);
     setInterval(() => {
         saveRealTimeFlow();
-    }, 10000);
+    }, 1000 * 300);
 }
 
 
