@@ -1,14 +1,12 @@
 package com.folhasdagua.folhasdagua.service;
 
-import com.folhasdagua.folhasdagua.model.Flow;
 import com.folhasdagua.folhasdagua.model.Sensor;
-import com.folhasdagua.folhasdagua.repository.FlowRepository;
 import com.folhasdagua.folhasdagua.repository.SensorRepository;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SensorService {

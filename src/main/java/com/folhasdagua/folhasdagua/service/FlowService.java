@@ -1,18 +1,12 @@
 package com.folhasdagua.folhasdagua.service;
 
-import com.fazecast.jSerialComm.SerialPort;
-import com.fazecast.jSerialComm.SerialPortDataListener;
-import com.fazecast.jSerialComm.SerialPortEvent;
 import com.folhasdagua.folhasdagua.model.Flow;
 import com.folhasdagua.folhasdagua.model.Sensor;
 import com.folhasdagua.folhasdagua.repository.FlowRepository;
-import jssc.SerialPortException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -21,10 +15,13 @@ import java.util.stream.Stream;
 @Service
 public class FlowService {
     @Autowired
-    SensorService sensorService;
+    SmsService smsService;
     @Autowired
     FlowRepository flowRepository;
     SensorConnectService sensorConnectService;
+
+    private final double MIN_STATUS_CHANGE = 86;
+
     public FlowService() {
         sensorConnectService = new SensorConnectService();
     }
@@ -33,10 +30,11 @@ public class FlowService {
         Flow flow = null;
         try {
             String value = sensorConnectService.read();
-            flow = makeFlowObject(value, sensor);
-            System.out.println(flow);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            flow = makeFlowObject(Double.parseDouble(value), sensor);
+            if (!flow.isStatus())
+                smsService.send("Tem algo de errado com a irrigação, verifique com urgência!");
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
         return flow;
     }
@@ -45,7 +43,6 @@ public class FlowService {
         try {
             Flow flow = getRealTimeFlow(sensor);
             save(flow);
-            System.out.println("------------------ SALVO NO BANCO ------------------");
         } catch (Exception exception) {
             saveRealTimeFlow(sensor);
         }
@@ -60,9 +57,9 @@ public class FlowService {
         return flowRepository.findAllBySensor(sensor);
     }
 
-    private Flow makeFlowObject(String value, Sensor sensor) {
+    private Flow makeFlowObject(Double amount, Sensor sensor) {
         Flow flow = new Flow();
-        double amount = Double.parseDouble(value);
+
         flow.setAmount(makeAmount(amount));
         flow.setDate(getNowDate());
         flow.setHour(getNowHours());
@@ -74,7 +71,7 @@ public class FlowService {
     }
 
     private boolean getFlowStatus(double value) {
-        return value >= 86;
+        return value >= MIN_STATUS_CHANGE;
     }
 
     private double makeAmount(double value) {

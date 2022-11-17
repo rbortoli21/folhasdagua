@@ -54,6 +54,10 @@ async function getSensorList(){
    await stompClient.send("/app/getSensorList", {});
 }
 
+async function getValueFromDayToChart(){
+
+}
+
 function getAmountAverageBySensor(){
     stompClient.send("/app/getAmountAverage", {}, getIdSensorActive());
 };
@@ -79,7 +83,7 @@ function refreshPage(){
     }, 2000);
     setInterval(() => {
         saveRealTimeFlow();
-    }, 1000 * 300);
+    }, 1000 * 120);
 }
 
 

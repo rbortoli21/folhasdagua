@@ -8,13 +8,10 @@ package com.folhasdagua.folhasdagua.service;
 import com.fazecast.jSerialComm.SerialPort;
 import com.fazecast.jSerialComm.SerialPortDataListener;
 import com.fazecast.jSerialComm.SerialPortEvent;
-import jssc.SerialPortEventListener;
-import jssc.SerialPortException;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.io.InputStream;
-import java.util.Arrays;
 
 import static com.fazecast.jSerialComm.SerialPort.TIMEOUT_READ_SEMI_BLOCKING;
 
@@ -22,12 +19,13 @@ import static com.fazecast.jSerialComm.SerialPort.TIMEOUT_READ_SEMI_BLOCKING;
 @Service
 public class SensorConnectService {
 
+    @Getter
+    @Setter
     String value;
     SerialPort serialPort;
 
     public SensorConnectService() {
         serialPort = SerialPort.getCommPorts()[0];
-
     }
 
     public ResponseEntity<Boolean> connect() {
@@ -52,24 +50,17 @@ public class SensorConnectService {
             public int getListeningEvents() {
                 return SerialPort.LISTENING_EVENT_DATA_RECEIVED;
             }
+
             @Override
             public void serialEvent(SerialPortEvent event) {
                 byte[] newData = event.getReceivedData();
-                setValueOut("");
-                for (int i = 0; i < newData.length; ++i){
-                    setValueOut(value += (char)newData[i]);
+                setValue("");
+                for (byte newDatum : newData) {
+                    setValue(value += (char) newDatum);
                 }
             }
         });
-        System.out.println("Final Value: " + getValueOut());
-        return getValueOut();
+        return getValue();
     }
 
-    public void setValueOut(String value){
-        this.value = value;
-    }
-
-    public String getValueOut(){
-        return this.value;
-    }
 }

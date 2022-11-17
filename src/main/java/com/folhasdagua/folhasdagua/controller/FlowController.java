@@ -27,29 +27,26 @@ public class FlowController {
     @Autowired
     SensorService sensorService;
 
-    @Autowired
-    SmsService smsService;
-
     @MessageMapping({"/getFlowListBySensor"})
     @SendTo("/topic/flowList")
     public Object getFlowListBySensor(@Payload final Integer sensorId) {
         return flowService.getFlowListBySensor(sensorService.getSensorById(sensorId));
     }
+
     @MessageMapping({"/getRealTimeFlow"})
     @SendTo({"/topic/realTimeFlow"})
-    public Object getRealTimeFlow(@Payload final Integer sensorId){
-        Flow flow = flowService.getRealTimeFlow(sensorService.getSensorById(sensorId));
-//        if(!flow.isStatus());
-//            smsService.send("Algo não está funcionando corretamente, verifique sua plantação!");
-        return flow;
+    public Object getRealTimeFlow(@Payload final Integer sensorId) {
+        return flowService.getRealTimeFlow(sensorService.getSensorById(sensorId));
     }
+
     @MessageMapping({"/getAmountAverage"})
     @SendTo({"/topic/amountAverage"})
-    public Object getAmountAverage(@Payload final Integer sensorId){
+    public Object getAmountAverage(@Payload final Integer sensorId) {
         return flowService.getAmountAverage(sensorService.getSensorById(sensorId));
     }
+
     @MessageMapping({"/saveRealTimeFlow"})
-    public void saveRealTimeFlow(@Payload final Integer sensorId){
+    public void saveRealTimeFlow(@Payload final Integer sensorId) {
         flowService.saveRealTimeFlow(sensorService.getSensorById(sensorId));
     }
 }
